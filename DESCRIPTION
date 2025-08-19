@@ -1,0 +1,34 @@
+Package: CCI
+Type: Package
+Title: Computational Test for Conditional Independence
+Version: 0.2.1
+Date: 2025-07-08
+Authors@R: 
+    c(person(given = "Christian B. H.",
+             family = "Thorjussen",
+             role = c("aut", "cre"),
+             email = "christianbern@gmail.com",
+             comment = c(ORCID = "0009-0005-5006-6491")),
+      person(given = "Kristian Hovde",
+             family = "Liland",
+             role = c("aut"),
+             email = "kristian.liland@nmbu.no",
+             comment = c(ORCID = "0000-0001-6468-9423")))
+Description: Tool for performing computational testing for conditional independence between variables in a dataset. 'CCI' implements permutation in combination with Monte Carlo Cross-Validation in generating null distributions and test statistics. For more details see Computational Test for Conditional Independence (2024) <doi:10.3390/a17080323>.   
+Imports: ggplot2, dplyr, caret, xgboost, ranger, stats, dagitty,
+        data.table, e1071, rlang, progress
+Suggests: testthat, knitr, rmarkdown
+License: GPL (>= 2)
+URL: https://github.com/khliland/CCI
+BugReports: https://github.com/khliland/CCI/issues
+Encoding: UTF-8
+RoxygenNote: 7.3.2
+NeedsCompilation: no
+Packaged: 2025-07-31 11:53:58 UTC; christian.thorjussen
+Author: Christian B. H. Thorjussen [aut, cre] (ORCID:
+    <https://orcid.org/0009-0005-5006-6491>),
+  Kristian Hovde Liland [aut] (ORCID:
+    <https://orcid.org/0000-0001-6468-9423>)
+Maintainer: Christian B. H. Thorjussen <christianbern@gmail.com>
+Repository: CRAN
+Date/Publication: 2025-08-19 14:50:25 UTC

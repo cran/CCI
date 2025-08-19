@@ -1,0 +1,15 @@
+citHeader("To cite the method used in this package use:")
+
+bibentry(
+  bibtype = "Article",
+  title = "Computational Test for Conditional Independence",
+  author = c(person("Christian B. H.", "Thorjussen"),
+             person("Kristian Hovde", "Liland"),
+             person("Ingrid", "Maage"),
+             person("Lars Erik", "Solberg")),
+  journal = "Algorithms",
+  year = 2024,
+  volume = 17,
+  number = 8,
+  doi = "10.3390/a17080323"
+)
