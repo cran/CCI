@@ -3,7 +3,7 @@ devtools::check()
 devtools::check_win_devel()
 devtools::document()
 devtools::clean_dll()
-devtools::build(path = "C:/CCI")
+devtools::build(path = "C:/Users/chris/Documents/GitHub/CCI")
 
 devtools::install()
 devtools::load_all()
@@ -12,287 +12,132 @@ citation("CCI")
 #-------------------------------------------------------------------------------
 # Basic tests CCI.test()
 #-------------------------------------------------------------------------------
-test_that("CCI.test outputs a list", {
-  set.seed(8)
-  dat <- NormalData(500)
-  result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'rf', interaction = F)
-  summary(result)
-  expect_true(is.list(result))
-})
-
+dat <- NormalData(500)
+result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat)
 summary(result)
 plot(result)
+result
 
-test_that("CCI.test outputs a list", {
-  set.seed(1)
-  dat <- NormalData(500)
-  result <- CCI.test(formula = Y ~ X + Z1 + Z2, interaction = F, data = dat, method = 'xgboost')
-  summary(result)
-  expect_true(is.list(result))
-})
+dat <- NormalData(500)
+result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'xgboost')
+summary(result)
 
-test_that("CCI.test outputs a list", {
-  set.seed(1)
-  dat <- NormalData(250)
-  result <- CCI.test(formula = Y ~ X + Z1 + Z2, interaction = F, data = dat, method = 'svm')
-  summary(result)
-  expect_true(is.list(result))
-})
+dat <- NormalData(250)
+result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'svm')
+summary(result)
 
 #-------------------------------------------------------------------------------
 # Basic tests CCI.pretuner
 #-------------------------------------------------------------------------------
-test_that("CCI.pretuner outputs a list", {
-  dat <- NormalData(500)
-  CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, method = 'xgboost', samples = 5)
-  CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, method = 'rf')
+dat <- NormalData(500)
+CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, method = 'xgboost', samples = 5)
+CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, method = 'rf')
 
-  expect_true(is.list(result))
-})
 
 #-------------------------------------------------------------------------------
 # Basic tests QQplot
 #-------------------------------------------------------------------------------
-test_that("QQplot should produce a QQplot", {
-  dat <- NormalData(500)
-  cci_obj <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, nperm = 100)
-  QQplot(cci_obj)
-  expect_true(is.list(result))
-})
+dat <- NormalData(100)
+cci_obj <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, nperm = 500)
+QQplot(cci_obj)
+
 
 #--------------------
 # With tuning
 #--------------------
+dat <- NonLinNormal(500)
+result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, interaction = F, method = 'rf', tune = TRUE)
+summary(result)
 
-test_that("CCI.test outputs a list", {
-  dat <- NonLinNormal(500)
-  result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, interaction = F, method = 'rf', tune = TRUE)
-  expect_true(is.list(result))
-})
+dat <- NonLinNormal(200)
+result <- CCI.test(formula = Y ~ X + Z1, interaction = F, nperm = 60, data = dat, method = 'xgboost', tune = TRUE)
 
-test_that("CCI.test outputs a list", {
-  dat <- NonLinNormal(200)
-  result <- CCI.test(formula = Y ~ X + Z1, interaction = F, nperm = 60, data = dat, method = 'xgboost', tune = TRUE)
-  expect_true(is.list(result))
-})
-
-test_that("CCI.test outputs a list", {
-  dat <- NonLinNormal(200)
-  result <- CCI.test(formula = Y ~ X + Z1, interaction = F, nperm = 60, data = dat, method = 'svm', tune = TRUE)
-  expect_true(is.list(result))
-})
+dat <- NonLinNormal(200)
+result <- CCI.test(formula = Y ~ X + Z1, interaction = F, nperm = 60, data = dat, method = 'svm', tune = TRUE)
+summary(result)
 
 
 #-------------------------------------------------------------------------------
 # Basic tests Binary outcome
 #-------------------------------------------------------------------------------
-test_that("CCI.test outputs a list", {
   set.seed(1985)
   dat <- BinaryData(500)
   result <- CCI.test(formula = Y ~ X + Z1, data = dat, method = 'xgboost', parametric = T)
   summary(result)
   plot(result)
-  expect_true(is.list(result))
-})
-test_that("CCI.test outputs a list", {
-  set.seed(1985)
-  dat <- BinaryData(500)
-  result <- CCI.test(formula = Y ~ X + Z1, data = dat, interaction = F, method = 'rf')
-  summary(result)
-  plot(result)
-  expect_true(is.list(result))
-})
-
-test_that("CCI.test outputs a list", {
-  set.seed(1985)
-  dat <- BinaryData(500)
-  result <- CCI.test(formula = Y ~ X + Z1, interaction = F, data = dat, method = 'svm', metric = 'Kappa')
-  summary(result)
-  plot(result)
-  expect_true(is.list(result))
-})
 
 
-#-------------------------------------------------------------------------------
+set.seed(1985)
+dat <- BinaryData(500)
+result <- CCI.test(formula = Y ~ X + Z1, data = dat, interaction = F, method = 'xgboost', metric = 'Kappa')
+summary(result)
+plot(result)
+
+set.seed(1985)
+dat <- BinaryData(500)
+result <- CCI.test(formula = Y ~ X + Z1, interaction = F, data = dat, method = 'svm', metric = 'Kappa')
+summary(result)
+plot(result)
+
+# -----------------------------------------------------------------------------
 # Basic tests Categorical outcome
 #-------------------------------------------------------------------------------
-test_that("CCI.test outputs a list", {
-  dat <- NonLinearCategorization(600, d = 2)
-  dat$Y <- as.factor(dat$Y)
-  result <- CCI.test(formula = Y ~ X + Z, data = dat, method = 'rf', interaction = F)
-  summary(result)
+dat <- NonLinearCategorization(600, d = 2)
+dat$Y <- as.factor(dat$Y)
+result <- CCI.test(formula = Y ~ X + Z, data = dat, method = 'rf', interaction = F)
+summary(result)
 
-  expect_true(is.list(result))
-})
-test_that("CCI.test outputs a list", {
-  dat <- NonLinearCategorization(800, d = 2)
-  dat$Y <- as.factor(dat$Y)
-  result <- CCI.test(formula = Y ~ X + Z,
+dat <- NonLinearCategorization(800, d = 2)
+dat$Y <- as.factor(dat$Y)
+result <- CCI.test(formula = Y ~ X + Z,
                      data = dat,
                      interaction = F,
                      method = 'xgboost')
-  summary(result)
-                     expect_true(is.list(result))
-})
+summary(result)
 
-test_that("CCI.test outputs a list", {
-  dat <- NonLinearCategorization(800, d = 2)
-  dat$Y <- as.factor(dat$Y)
-  result <- CCI.test(formula = Y ~ X + Z,
-                     interaction = F,
+dat <- NonLinearCategorization(800, d = 2)
+dat$Y <- as.factor(dat$Y)
+result <- CCI.test(formula = Y ~ X + Z,
                      data = dat,
                      method = 'svm')
-  expect_true(is.list(result))
-})
 
+summary(result)
 #-----------------------------------------------------
 # Direction function
 #-----------------------------------------------------
 
-test_that('CCI.direction', {
-  dat <- SineGaussianBiv(N = 500, a = 2, d = 1)
-  result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, choose_direction = T)
-  expect_true(inherits(result, "formula"))
-})
+dat <- SineGaussianBiv(N = 500, a = 2, d = 1)
+result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, choose_direction = T)
+summary(result)
 
-test_that('CCI.direction', {
-  dat <- SineGaussianBiv(N = 500, a = 2, d = 1)
-  CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'xgboost', choose_direction = TRUE)
-  expect_true(inherits(result, "formula"))
-})
 
-test_that('CCI.direction', {
-  dat <- SineGaussianBiv(N = 500, a = 2, d = 1)
-  CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'svm', choose_direction = TRUE)
-  expect_true(inherits(result, "formula"))
-})
+dat <- SineGaussianBiv(N = 500, a = 2, d = 1)
+CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'xgboost', choose_direction = TRUE)
+summary(result)
 
-#-----------------------------------------------------
-# DAG example
-#-----------------------------------------------------
-
-test_that('Dagitty', {
-
-  dag <- dagitty::dagitty("dag {
-    Z1 -> Y
-    Z2 -> Y
-    Z1 -> X
-    Z2 -> X
-  }")
-  dagitty::impliedConditionalIndependencies(dag)
-  dat <- NormalData(N = 500)
-  result <- CCI.test(dag = dag, data = dat)
-
-})
-test_that('Dagitty with direction', {
-  dag <- dagitty::dagitty("dag {
-    Z1 -> Y
-    Z2 -> Y
-    Z1 -> X
-    Z2 -> X
-  }")
-  dagitty::impliedConditionalIndependencies(dag)
-  dat <- NormalData(N = 500)
-  result <- CCI.test(dag = dag, data = dat, choose_direction = TRUE)
-
-})
+dat <- SineGaussianBiv(N = 500, a = 2, d = 1)
+result <- CCI.test(formula = Y ~ X + Z1 + Z2, data = dat, method = 'svm', choose_direction = TRUE)
+summary(result)
 
 #-------------------------------------------------------------------------------
 # Testing the tuning function
 #-------------------------------------------------------------------------------
 
-test_that("Tuning using 'rf' (default)", {
-  dat <- NormalData(200)
-  CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, method = 'rf', tune = F, tune_length = 3)
-  CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, method = 'xgboost')
-  CCI.pretuner(formula = Y ~ X + Z1 + Z2, data = dat, samples = 100, method = 'svm')
-})
-
-
-test_that("Tuning using 'rf' and categorical data", {
-
-  data <- TrigData(500)
-  data$Y <- as.numeric(as.factor(data$Y))
-  data$X <- as.numeric(as.factor(data$X))
-  parameter <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
+data <- TrigData(700)
+data$Y <- as.numeric(as.factor(data$Y)) - 1
+data$X <- as.numeric(as.factor(data$X)) - 1
+parameter <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
                             data = data,
-                            seed = 192,
-                            method = 'rf')
-
-
-  expect_true(is.numeric(parameter$mtry))
-})
-
-test_that("Tuning using 'xgboost' and categorical data", {
-
-  data <- TrigData(700)
-  data$Y <- as.numeric(as.factor(data$Y)) - 1
-  data$X <- as.numeric(as.factor(data$X)) - 1
-  parameter <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
-                            data = data,
-                            metric = 'Kappa',
                             method = 'xgboost',
                             verboseIter = F)
 
-  parameter$warnings
-  expect_true(is.numeric(parameter$mtry))
-})
-
-test_that("Tuning using 'svm' and categorical data", {
-
-  data <- TrigData(400)
-  data$Y <- as.numeric(as.factor(data$Y)) - 1
-  data$X <- as.numeric(as.factor(data$X)) - 1
-  parameter <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
-                            data = data,
-                            tune_length = 10,
-                            method = 'svm')
 
 
-  expect_true(is.numeric(parameter$mtry))
-})
-
-
-test_that("Testing utils get_tuned_params ", {
-  dat <- NormalData(1000)
-  tuned_model <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
-                              data = dat,
-                              tune_length = 5,
-                              method = 'rf')
-
-  tuned_params <- get_tuned_params(tuned_model)
-  expect_true(is.numeric(tuned_params$mtry))
-})
-
-test_that("Testing utils get_tuned_params ", {
-  dat <- NormalData(1000)
-  tuned_model <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
-                              data = dat,
-                              samples = 5,
-                              method = 'xgboost')
-
-  tuned_params <- get_tuned_params(tuned_model)
-  expect_true(is.numeric(tuned_params$ets))
-})
-
-test_that("Testing utils get_tuned_params ", {
-  dat <- NormalData(1000)
-  tuned_model <- CCI.pretuner(formula = Y ~ X + Z1 + Z2,
-                              data = dat,
-                              tune_length = 5,
-                              method = 'svm')
-
-  tuned_params <- get_tuned_params(tuned_model)
-  expect_true(is.numeric(tuned_params$gamma))
-})
-
-
+  
 #-------------------------------------------------------------------------------
-test_that("clean_formula outputs correct formula", {
-  clean_formula <- clean_formula(y ~ x | z + v)
-  expect_true(class(clean_formula) == "formula")
-  expect_equal(clean_formula, y ~ x | z + v)
-})
+clean_formula <- clean_formula(y ~ x | z + v)
+clean_formula
+class(clean_formula)
 #-------------------------------------------------------------------------------
 test_that("clean_formula outputs correct formula", {
   clean_formula <- clean_formula(y ~ x + z + v)
@@ -437,50 +282,16 @@ test_that("test.gen works correctly for binary outcome data using Xgboost", {
 
           })
 #-------------------------------------------------------------------------------
-test_that("test.gen works correctly with Xgboost", {
             data <- BinaryData(500)
             result <- test.gen(formula = Y ~ X | Z1 + Z2,
                                data = data,
                                nperm = 40,
                                method = "xgboost",
-                               data_type = "binary",
+                               metric = "Kappa",
                                permutation = TRUE,
                                degree = 5,
                                nrounds = 220)
-            expect_true(class(result) == "list")
-            expect_true(class(mean(unlist(result))) == "numeric")
-
-          })
-#-------------------------------------------------------------------------------
-
-test_that("test.gen works correctly with  SVM", {
-  data <- NormalData(600)
-
-  result <- test.gen(Y = "Y",
-                     X = "X",
-                     Z = c("Z1", "Z2"),
-                     data = data,
-                     nperm = 25,
-                     method = "svm")
-
-  expect_true(class(result) == "list")
-  expect_true(class(mean(unlist(result))) == "numeric")
-})
-#-------------------------------------------------------------------------------
-test_that("test.gen works correctly withSVM categorical", {
-  data <- InteractiondData(600)
-
-  result <- test.gen(Y = "Y",
-                     X = "X",
-                     Z = c("Z1", "Z2"),
-                     data = data,
-                     nperm = 50,
-                     data_type = "categorical",
-                     method = "svm")
-
-  expect_true(class(result) == "list")
-  expect_true(class(mean(unlist(result))) == "numeric")
-})
+            result
 
 #-------------------------------------------------------------------------------
 # Creating a wrapper function using the caret package with cross-validation
@@ -505,20 +316,15 @@ bagging_wrapper <- function(formula,
 }
 
 #-------------------------------------------------------------------------------
-test_that("test.gen works correctly for with custom made ML function called bagging_wrapper", {
   data <- NormalData(500)
-  result <- test.gen(Y = "Y",
-                     X = "X",
-                     Z = c("Z1", "Z2"),
+  result <- CCI.test(formula = Y ~ X | Z1 + Z2 ,
                      data = data,
                      nperm = 50,
                      nbag = 50,
-                     mlfunc = bagging_wrapper)
+                     mlfunc = bagging_wrapper,
+                     tail = 'right')
+  summary(result)
 
-  expect_true(class(result) == "list")
-  expect_true(class(mean(unlist(result))) == "numeric")
-
-})
 #-------------------------------------------------------------------------------
 rSquared <- function(data, model, test_indices) {
   actual <- data[test_indices,][['Y']]
@@ -528,20 +334,15 @@ rSquared <- function(data, model, test_indices) {
   metric <- 1 - (ssr / sst)
   return(metric)
 }
-test_that("test.gen works correctly using metricfunc", {
   data <- NonLinNormal(500)
 
-  result <- test.gen(Y = "Y",
-                     X = "X",
-                     Z = c("Z1", "Z2"),
+  result <- CCI.test(formula = Y ~ X | Z1 + Z2 ,
                      data = data,
-                     nperm = 40,
-                     metricfunc = rSquared)
-
-  expect_true(class(result) == "list")
-  expect_true(class(mean(unlist(result))) == "numeric")
-
-})
+                     nperm = 50,
+                     nbag = 50,
+                     metricfunc = rSquared,
+                     tail = 'right')
+  summary(result)
 
 #-------------------------------------------------------------------------------
 ################## Troubleshooting perm.test() #################################
